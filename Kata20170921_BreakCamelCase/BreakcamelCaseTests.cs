@@ -38,23 +38,17 @@ namespace Kata20170921_BreakCamelCase
     {
         public string BreakCamelCase(string str)
         {
-            if (str == "abc")
-            {
-                return str;
-            }
-
             var upperCharIndex = str.Select((c, i) => char.IsUpper(c) ? i : 0).Where(i => i != 0).ToList();
-            var result = new List<string>();
 
             upperCharIndex.Add(str.Length);
 
             var skip = 0;
-
-            foreach (var idx in upperCharIndex)    
+            var result = upperCharIndex.Select(idx =>
             {
-                result.Add(string.Concat(str.Skip(skip).Take(idx - skip)));
+                var r = string.Concat(str.Skip(skip).Take(idx - skip));
                 skip = idx;
-            }
+                return r;
+            });
 
             return string.Join(" ", result);
         }
