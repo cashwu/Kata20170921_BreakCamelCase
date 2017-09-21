@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -42,11 +43,20 @@ namespace Kata20170921_BreakCamelCase
                 return str;
             }
 
-            if (str.Length == 6)
+            var upperCharIndex = str.Select((c, i) => char.IsUpper(c) ? i : 0).Where(i => i != 0).ToList();
+            var result = new List<string>();
+
+            upperCharIndex.Add(str.Length);
+
+            var skip = 0;
+
+            foreach (var idx in upperCharIndex)    
             {
-                return string.Concat(str.Take(3)) + " " + string.Concat(str.Skip(3).Take(3));
+                result.Add(string.Concat(str.Skip(skip).Take(idx - skip)));
+                skip = idx;
             }
-            return string.Concat(str.Take(3)) + " " + string.Concat(str.Skip(3).Take(3)) + " " + string.Concat(str.Skip(6).Take(3));
+
+            return string.Join(" ", result);
         }
     }
 }
